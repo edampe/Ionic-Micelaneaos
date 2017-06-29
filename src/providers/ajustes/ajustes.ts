@@ -48,12 +48,13 @@ export class AjustesServices {
         console.log("Estamos en el comu")
   
         if ( localStorage.getItem('ajustes')){
-        console.log("entramos a los ajustes")
+          console.log("entramos a los ajustes")
           
           this.ajustes = JSON.parse( localStorage.getItem('ajustes') )
 
-          resolve()
         }
+          resolve()
+        
       }
     })
 

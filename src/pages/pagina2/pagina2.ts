@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 
 @Component({
   selector: 'page-pagina2',
@@ -8,7 +8,11 @@ import { NavController, NavParams } from 'ionic-angular';
 export class Pagina2Page {
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams,
+              public alertCtrl: AlertController,
+              public loadingCtrl: LoadingController) {
+
   }
 
   irPagina3(){
@@ -40,17 +44,33 @@ export class Pagina2Page {
   }
 
   ionViewCanEnter(){
-    console.log("ionViewCanEnter")  
 
-    let numero = Math.round( Math.random() * 10 )
+    let promesa = new Promise( (resolve, reject) => {
 
-    console.log(numero)  
-    
-    if ( numero >= 3){
-      return true
-    }else{
-      return false
-    }
+      let confirm = this.alertCtrl.create({
+      title: '¿Seguro?',
+      message: '¿Esta seguro de que desea entrar?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {
+            console.log('Disagree clicked');
+            resolve(false) 
+          }
+        },
+        {
+          text: 'Si, seguro',
+          handler: () => {
+            console.log('Agree clicked');
+            resolve(true)
+          }
+        }
+      ]
+    });
+    confirm.present();
+
+    })
+      return promesa
   }
 
   ionViewCanLeave(){
@@ -58,9 +78,15 @@ export class Pagina2Page {
 
     console.log("Espere 3 segundos para salir")
 
+    let loader = this.loadingCtrl.create({
+      content: "Please wait...",
+    });
+    loader.present();
+
     let promesa =  new Promise ( ( resolve, reject ) =>{
 
       setTimeout( () => {
+        loader.dismiss()
         resolve(true)
       }, 2000 )
 

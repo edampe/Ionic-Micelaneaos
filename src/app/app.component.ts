@@ -13,7 +13,7 @@ export class MyApp {
 //  rootPage:any = HomePage;
   rootPage:any;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+  constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
               private _ajustes: AjustesServices) {
     platform.ready().then(() => {
 
@@ -24,6 +24,14 @@ export class MyApp {
         }else{
           this.rootPage = HomePage
         }
+
+        this.platform.pause.subscribe( () => {
+          console.log('La aplicacion se detendra')
+        })
+        
+        this.platform.resume.subscribe( () => {
+          console.log('La aplicacion va a continuar')
+        })
 
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
